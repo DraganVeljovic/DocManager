@@ -32,21 +32,17 @@
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addDocumentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.findToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.fullScreenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.documentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.changeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.writeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addCommentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.archiveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.viewCommentsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.changeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.userToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.changePasswordToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.logoutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.writeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -54,8 +50,6 @@
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.editToolStripMenuItem,
-            this.viewToolStripMenuItem,
             this.documentToolStripMenuItem,
             this.userToolStripMenuItem,
             this.aboutToolStripMenuItem});
@@ -87,43 +81,14 @@
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
-            // editToolStripMenuItem
-            // 
-            this.editToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.findToolStripMenuItem});
-            this.editToolStripMenuItem.Enabled = false;
-            this.editToolStripMenuItem.Name = "editToolStripMenuItem";
-            this.editToolStripMenuItem.Size = new System.Drawing.Size(39, 20);
-            this.editToolStripMenuItem.Text = "Edit";
-            // 
-            // findToolStripMenuItem
-            // 
-            this.findToolStripMenuItem.Name = "findToolStripMenuItem";
-            this.findToolStripMenuItem.Size = new System.Drawing.Size(97, 22);
-            this.findToolStripMenuItem.Text = "Find";
-            // 
-            // viewToolStripMenuItem
-            // 
-            this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fullScreenToolStripMenuItem});
-            this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
-            this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
-            this.viewToolStripMenuItem.Text = "View";
-            // 
-            // fullScreenToolStripMenuItem
-            // 
-            this.fullScreenToolStripMenuItem.Name = "fullScreenToolStripMenuItem";
-            this.fullScreenToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
-            this.fullScreenToolStripMenuItem.Text = "Full Screen";
-            // 
             // documentToolStripMenuItem
             // 
             this.documentToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openToolStripMenuItem,
             this.writeToolStripMenuItem,
             this.addCommentToolStripMenuItem,
+            this.viewCommentsToolStripMenuItem,
             this.changeToolStripMenuItem,
-            this.archiveToolStripMenuItem,
             this.deleteToolStripMenuItem});
             this.documentToolStripMenuItem.Enabled = false;
             this.documentToolStripMenuItem.Name = "documentToolStripMenuItem";
@@ -136,11 +101,11 @@
             this.openToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
             this.openToolStripMenuItem.Text = "Read";
             // 
-            // changeToolStripMenuItem
+            // writeToolStripMenuItem
             // 
-            this.changeToolStripMenuItem.Name = "changeToolStripMenuItem";
-            this.changeToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
-            this.changeToolStripMenuItem.Text = "Change metadata";
+            this.writeToolStripMenuItem.Name = "writeToolStripMenuItem";
+            this.writeToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.writeToolStripMenuItem.Text = "Write";
             // 
             // addCommentToolStripMenuItem
             // 
@@ -148,11 +113,17 @@
             this.addCommentToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
             this.addCommentToolStripMenuItem.Text = "Add comment";
             // 
-            // archiveToolStripMenuItem
+            // viewCommentsToolStripMenuItem
             // 
-            this.archiveToolStripMenuItem.Name = "archiveToolStripMenuItem";
-            this.archiveToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
-            this.archiveToolStripMenuItem.Text = "Archive";
+            this.viewCommentsToolStripMenuItem.Name = "viewCommentsToolStripMenuItem";
+            this.viewCommentsToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.viewCommentsToolStripMenuItem.Text = "View comments";
+            // 
+            // changeToolStripMenuItem
+            // 
+            this.changeToolStripMenuItem.Name = "changeToolStripMenuItem";
+            this.changeToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.changeToolStripMenuItem.Text = "Change metadata";
             // 
             // deleteToolStripMenuItem
             // 
@@ -189,12 +160,6 @@
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
-            // writeToolStripMenuItem
-            // 
-            this.writeToolStripMenuItem.Name = "writeToolStripMenuItem";
-            this.writeToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
-            this.writeToolStripMenuItem.Text = "Write";
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -216,14 +181,9 @@
         protected System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         protected System.Windows.Forms.ToolStripMenuItem addDocumentToolStripMenuItem;
         protected System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
-        protected System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
-        protected System.Windows.Forms.ToolStripMenuItem findToolStripMenuItem;
-        protected System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
-        protected System.Windows.Forms.ToolStripMenuItem fullScreenToolStripMenuItem;
         protected System.Windows.Forms.ToolStripMenuItem documentToolStripMenuItem;
         protected System.Windows.Forms.ToolStripMenuItem changeToolStripMenuItem;
         protected System.Windows.Forms.ToolStripMenuItem addCommentToolStripMenuItem;
-        protected System.Windows.Forms.ToolStripMenuItem archiveToolStripMenuItem;
         protected System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
         protected System.Windows.Forms.ToolStripMenuItem userToolStripMenuItem;
         protected System.Windows.Forms.ToolStripMenuItem changePasswordToolStripMenuItem;
@@ -231,6 +191,7 @@
         protected System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         protected System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
         protected System.Windows.Forms.ToolStripMenuItem writeToolStripMenuItem;
+        protected System.Windows.Forms.ToolStripMenuItem viewCommentsToolStripMenuItem;
     }
 }
 

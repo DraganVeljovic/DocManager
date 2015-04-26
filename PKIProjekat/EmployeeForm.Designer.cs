@@ -188,9 +188,9 @@
             this.Owner,
             this.Type,
             this.Active});
-            this.listView1.Location = new System.Drawing.Point(400, 91);
+            this.listView1.Location = new System.Drawing.Point(339, 88);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(388, 300);
+            this.listView1.Size = new System.Drawing.Size(449, 303);
             this.listView1.TabIndex = 22;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -199,7 +199,7 @@
             // Title
             // 
             this.Title.Text = "Title";
-            this.Title.Width = 109;
+            this.Title.Width = 114;
             // 
             // Version
             // 
@@ -209,27 +209,27 @@
             // Created
             // 
             this.Created.Text = "Created";
-            this.Created.Width = 70;
+            this.Created.Width = 91;
             // 
             // Permission
             // 
             this.Permission.Text = "Perm.";
-            this.Permission.Width = 42;
+            this.Permission.Width = 47;
             // 
             // Owner
             // 
             this.Owner.Text = "Owner";
-            this.Owner.Width = 47;
+            this.Owner.Width = 63;
             // 
             // Type
             // 
             this.Type.Text = "Type";
-            this.Type.Width = 39;
+            this.Type.Width = 42;
             // 
             // Active
             // 
             this.Active.Text = "Active";
-            this.Active.Width = 55;
+            this.Active.Width = 49;
             // 
             // checkBox6
             // 

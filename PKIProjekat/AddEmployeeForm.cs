@@ -28,19 +28,33 @@ namespace PKIProjekat
 
         private void button2_Click(object sender, EventArgs e)
         {
-            Employee newEmployee = new Employee();
+            try
+            {
+                Employee newEmployee = new Employee();
 
-            newEmployee.Username = textBox1.Text;
-            newEmployee.Password = "";
-            newEmployee.FirstName = textBox2.Text;
-            newEmployee.LastName = textBox3.Text;
-            newEmployee.Email = textBox4.Text;
-            newEmployee.Telephone = int.Parse(textBox5.Text);
-            newEmployee.OfficeNumber = int.Parse(textBox6.Text);
+                newEmployee.Username = textBox1.Text;
+                newEmployee.Password = "";
+                newEmployee.FirstName = textBox2.Text;
+                newEmployee.LastName = textBox3.Text;
+                newEmployee.Email = textBox4.Text;
+                newEmployee.Telephone = textBox5.Text;
+                newEmployee.OfficeNumber = int.Parse(textBox6.Text);
 
-            employeeRepository.Add(newEmployee);
-
-            Dispose();
+                if (employeeRepository.GetEmployeeByName(newEmployee.Username) == null)
+                {
+                    employeeRepository.Add(newEmployee);
+                    DialogResult = DialogResult.OK;
+                    Dispose();
+                }
+                else
+                {
+                    MessageBox.Show("User with given username already exists!");
+                }
+            }
+            catch (FormatException)
+            {
+                MessageBox.Show("Office number must be integer number!");
+            }
         }
     }
 }

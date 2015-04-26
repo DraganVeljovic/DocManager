@@ -28,7 +28,11 @@ namespace PKIProjekat
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.Dispose();
+            if (MessageBox.Show("Are you sure you want to exit the application?", "Confirmation dialog", MessageBoxButtons.YesNo)
+                == DialogResult.Yes)
+            {
+                Dispose();
+            }
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)

@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using PKIProjekat.Services;
 using PKIProjekat.Domain;
 using System.Diagnostics;
+using System.IO;
 
 namespace PKIProjekat
 {
@@ -17,6 +18,7 @@ namespace PKIProjekat
 
         protected DocumentRepository documentRepository = new DocumentRepository();
         protected CommentRepository commentRepository = new CommentRepository();
+        protected DocumentContentRepository documentContentRepository = new DocumentContentRepository();
 
         protected IList<Document> ownDocuments;
         protected IList<Document> readableDocuments;
@@ -47,7 +49,7 @@ namespace PKIProjekat
             changeToolStripMenuItem.Click += changeToolStripMenuItem_Click;
             deleteToolStripMenuItem.Click += deleteToolStripMenuItem_Click;
             addCommentToolStripMenuItem.Click += addCommentToolStripMenuItem_Click;
-
+            viewCommentsToolStripMenuItem.Click += viewCommentsToolStripMenuItem_Click;
 
             changePasswordToolStripMenuItem.Click += changePasswordToolStripMenuItem_Click;
             logoutToolStripMenuItem.Click += logoutToolStripMenuItem_Click;
@@ -62,6 +64,51 @@ namespace PKIProjekat
         }
 
         /// <summary>
+        /// Archive document.
+        /// </summary>
+        /*
+        void archiveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Document selectedDocument = documentRepository.GetDocumentByVersion(
+                 listView1.SelectedItems[0].Text, int.Parse(listView1.SelectedItems[0].SubItems[1].Text));
+
+            if (selectedDocument.Owner.Username.CompareTo(loggedEmployee.Username) != 0 
+                && !loggedEmployee.Administrator 
+                && !selectedDocument.Writers.Contains(loggedEmployee))
+            {
+                MessageBox.Show("Only user with write permission can archive document." + (selectedDocument.Owner != loggedEmployee));
+            }
+            else
+            {
+                if (MessageBox.Show("Are you sure you want to archive seleceted document",
+                                "Confirmation dialog", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    selectedDocument.IsActive = false;
+
+                    documentRepository.Update(selectedDocument);
+
+                    populateLists();
+                    updateListView(ownDocuments, readableDocuments, writableDocuments);
+                }
+            }
+        }
+         * */
+
+        /// <summary>
+        /// View comments for selected document.
+        /// </summary>
+        void viewCommentsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Document selectedDocument = documentRepository.GetDocumentByVersion(
+                listView1.SelectedItems[0].Text, int.Parse(listView1.SelectedItems[0].SubItems[1].Text));
+
+            if (selectedDocument != null)
+            {
+                (new ShowComments(selectedDocument, loggedEmployee)).Show(); 
+            }
+        }
+
+        /// <summary>
         /// Add comment to selected document.
         /// </summary>
         void addCommentToolStripMenuItem_Click(object sender, EventArgs e)
@@ -69,7 +116,20 @@ namespace PKIProjekat
             Document selectedDocument = documentRepository.GetDocumentByVersion(
                 listView1.SelectedItems[0].Text, int.Parse(listView1.SelectedItems[0].SubItems[1].Text));
 
-            (new NewComment(selectedDocument, loggedEmployee)).Show();
+            if (selectedDocument != null)
+            {
+                if (selectedDocument.IsActive)
+                {
+                    if ((new NewComment(selectedDocument, loggedEmployee)).ShowDialog() == DialogResult.OK)
+                    {
+                        MessageBox.Show("Comment is sucessfully added on document " + selectedDocument.Title);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Document is archived, you cannot add a comment on it.");
+                } 
+            }
         }
 
         /// <summary>
@@ -80,10 +140,36 @@ namespace PKIProjekat
             Document selectedDocument = documentRepository.GetDocumentByVersion(
                 listView1.SelectedItems[0].Text, int.Parse(listView1.SelectedItems[0].SubItems[1].Text));
 
-            documentRepository.Delete(selectedDocument);
+                bool operationAllowed = false;
 
-            populateLists();
-            updateListView(ownDocuments, readableDocuments, writableDocuments);
+                if (selectedDocument.Owner.Equals(loggedEmployee))
+                {
+                    operationAllowed = true;
+                }
+                else if (selectedDocument.Writers.Contains(loggedEmployee))
+                {
+                    operationAllowed = true;
+                }
+
+                if (operationAllowed)
+                {
+                    if (MessageBox.Show("Are you sure you want to delete seleceted document",
+                                    "Confirmation dialog", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    {
+                        documentContentRepository.Delete(selectedDocument.Content);
+                        documentRepository.Delete(selectedDocument);
+
+                        populateLists();
+                        updateListView(ownDocuments, readableDocuments, writableDocuments);
+
+                        this.documentToolStripMenuItem.Enabled = false;
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Only user with write permission can delete document.");
+                } 
+            
         }
 
         /// <summary>
@@ -94,47 +180,90 @@ namespace PKIProjekat
             Document selectedDocument = documentRepository.GetDocumentByVersion(
                 listView1.SelectedItems[0].Text, int.Parse(listView1.SelectedItems[0].SubItems[1].Text));
 
-            if (selectedDocument.IsActive)
+            if (listView1.SelectedItems[0].SubItems[3].Text.CompareTo("Write") != 0)
             {
-                if (selectedDocument.IsWriting)
-                {
-                    MessageBox.Show("Document is already open in write mode," +
-                        "\nyou can not access document at the moment.\nPlease try again later.");
-                }
-                else
-                {
-                    if (selectedDocument.IsReading == 0)
-                    {
-                        selectedDocument.IsWriting = true;
-
-                        documentRepository.Update(selectedDocument);
-
-                        Process writeDocumentProcess = new Process();
-
-                        writeDocumentProcess.StartInfo.FileName = MainForm.DocumentPath + "\\" + selectedDocument.Title + 
-                            "_" + selectedDocument.Version + "." + selectedDocument.Type;
-
-                        writeDocumentProcess.StartInfo.WindowStyle = ProcessWindowStyle.Maximized;
-
-                        writeDocumentProcess.Start();
-
-                        writeDocumentProcess.WaitForExit();
-
-                        selectedDocument.IsWriting = false;
-
-                        documentRepository.Update(selectedDocument);
-                    }
-                    else
-                    {
-                        MessageBox.Show("Document is already open in read mode," +
-                       "\nyou can not open it for write.\nPlease try again later.");
-                    }
-                }
+                MessageBox.Show("You don't have permission to open this document in write mode.");
             }
             else
             {
-                MessageBox.Show("Document is archived. You can not change it.");
-            }        
+
+                if (selectedDocument.IsActive)
+                {
+                    if (selectedDocument.IsWriting)
+                    {
+                        MessageBox.Show("Document is already open in write mode," +
+                            "\nyou can not access document at the moment.\nPlease try again later.");
+                    }
+                    else
+                    {
+                        if (selectedDocument.IsReading == 0)
+                        {
+                            selectedDocument.IsWriting = true;
+
+                            documentRepository.Update(selectedDocument);
+
+                            string filepath = MainForm.DocumentPath + "\\" +
+                            selectedDocument.Title + "." + selectedDocument.Type;
+
+                            if (File.Exists(filepath))
+                            {
+                                File.Delete(filepath);
+                            }
+
+                            File.WriteAllBytes(filepath, selectedDocument.Content.Data);
+
+                            Process writeDocumentProcess = new Process();
+
+                            writeDocumentProcess.StartInfo.FileName = filepath;
+                            writeDocumentProcess.StartInfo.WindowStyle = ProcessWindowStyle.Maximized;
+
+                            writeDocumentProcess.Start();
+                            writeDocumentProcess.WaitForExit();
+
+                            if (MessageBox.Show("Do you want to upload new version to server",
+                                "Confirmation dialog", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                            {
+                                DocumentContent newVersionContent = new DocumentContent();
+
+                                FileStream fs = new FileStream(filepath, FileMode.Open, FileAccess.Read);
+                                BinaryReader br = new BinaryReader(fs);
+                                newVersionContent.Data = br.ReadBytes((Int32)fs.Length);
+                                br.Close();
+                                fs.Close();
+
+                                documentContentRepository.Add(newVersionContent);
+
+                                Document newVersion = new Document(selectedDocument);
+
+                                newVersion.Created = DateTime.Now;
+                                newVersion.Version = selectedDocument.Version + 1;
+
+                                newVersion.Owner = new Employee(selectedDocument.Owner);
+
+                                newVersion.Content = newVersionContent;
+
+                                documentRepository.Add(newVersion);
+
+                                populateLists();
+                                updateListView(ownDocuments, readableDocuments, writableDocuments);
+                            }
+
+                            selectedDocument.IsWriting = false;
+
+                            documentRepository.Update(selectedDocument);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Document is already open in read mode," +
+                           "\nyou can not open it for write.\nPlease try again later.");
+                        }
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Document is archived. You can not change it.");
+                }
+            }
         }
 
         /// <summary>
@@ -142,9 +271,10 @@ namespace PKIProjekat
         /// </summary>
         void changePasswordToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ChangePassword changePassword = new ChangePassword(loggedEmployee);
-
-            changePassword.ShowDialog();
+            if (new ChangePassword(loggedEmployee).ShowDialog() == DialogResult.OK)
+            {
+                 MessageBox.Show("Password is successfully changed.");
+            }
         }
 
         /// <summary>
@@ -162,16 +292,26 @@ namespace PKIProjekat
         /// </summary>
         void changeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Document selectedDocument = documentRepository.GetDocumentByTitle(listView1.SelectedItems[0].Text);
-            ChangeDocumentDialog changeDocumentDialog = new ChangeDocumentDialog(loggedEmployee, selectedDocument);
+            Document selectedDocument = documentRepository.GetDocumentByVersion(
+                listView1.SelectedItems[0].Text, int.Parse(listView1.SelectedItems[0].SubItems[1].Text));
 
-            if (changeDocumentDialog.ShowDialog() == DialogResult.OK)
+            if (selectedDocument.Owner.Username.CompareTo(loggedEmployee.Username) != 0 
+                && !loggedEmployee.Administrator 
+                && !selectedDocument.Writers.Contains(loggedEmployee))
             {
-                populateLists();
-                updateListView(ownDocuments, readableDocuments, writableDocuments);
+                MessageBox.Show("Only document owner can change metadata.");
             }
+            else
+            {
+                if ((new ChangeDocumentDialog(loggedEmployee, selectedDocument)).ShowDialog() == DialogResult.OK)
+                {
+                    populateLists();
+                    updateListView(ownDocuments, readableDocuments, writableDocuments);
 
-            changeDocumentDialog.Dispose();
+                    MessageBox.Show("Document metadata is successfully changed.");
+                }
+
+            }
         }
         
         /// <summary>
@@ -180,7 +320,7 @@ namespace PKIProjekat
         void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Document selectedDocument = documentRepository.GetDocumentByVersion(
-                listView1.SelectedItems[0].Text, int.Parse(listView1.SelectedItems[0].SubItems[1].Text));
+                 listView1.SelectedItems[0].Text, int.Parse(listView1.SelectedItems[0].SubItems[1].Text));
 
                 if (selectedDocument.IsWriting)
                 {
@@ -193,16 +333,28 @@ namespace PKIProjekat
 
                     documentRepository.Update(selectedDocument);
 
+                    string filepath =  MainForm.DocumentPath + "\\" + 
+                        selectedDocument.Title + "." + selectedDocument.Type;
+
+                    if (File.Exists(filepath))
+                    {
+                        File.Delete(filepath);
+                    }
+                   
+                    File.WriteAllBytes(filepath, selectedDocument.Content.Data);
+                    
                     Process readDocumentProcess = new Process();
 
-                    readDocumentProcess.StartInfo.FileName = MainForm.DocumentPath + "\\" + selectedDocument.Title + 
-                        "_" + selectedDocument.Version + "." + selectedDocument.Type;
-
+                    readDocumentProcess.StartInfo.FileName = filepath;
                     readDocumentProcess.StartInfo.WindowStyle = ProcessWindowStyle.Maximized;
 
-                    readDocumentProcess.Start();
+                    //var attributes = System.IO.File.GetAttributes(filepath);
+                    //File.SetAttributes(filepath, attributes | FileAttributes.ReadOnly);
 
+                    readDocumentProcess.Start();
                     readDocumentProcess.WaitForExit();
+
+                    //File.SetAttributes(filepath, attributes);
 
                     selectedDocument.IsReading = selectedDocument.IsReading - 1;
 
@@ -211,17 +363,29 @@ namespace PKIProjekat
             
         }
 
-        private void populateLists()
+        protected virtual void populateLists()
         {
             ownDocuments = documentRepository.GetOwnDocumentsForEmployee(loggedEmployee);
             readableDocuments = documentRepository.GetReadableDocumentsForEmployee(loggedEmployee);
             writableDocuments = documentRepository.GetWritableDocumentsForEmployee(loggedEmployee);
         }
 
+        protected virtual void addTypeToCheckBoxList(string type)
+        {
+            foreach (string item in checkedListBox1.Items)
+            {
+                if (item.CompareTo(type) == 0)
+                    return;
+            }
+
+            checkedListBox1.Items.Add(type);
+        }
+
         private void updateListView(IList<Document> ownDocuments,
             IList<Document> readableDocuments, IList<Document> writableDocuments)
         {
             listView1.Items.Clear();
+            checkedListBox1.Items.Clear();
 
             if (ownDocuments != null)
             {
@@ -236,6 +400,8 @@ namespace PKIProjekat
                     listViewItem.SubItems.Add(document.IsActive ? "Yes" : "No");
 
                     listView1.Items.Add(listViewItem);
+
+                    addTypeToCheckBoxList(document.Type);
                 }
             }
 
@@ -252,6 +418,8 @@ namespace PKIProjekat
                     listViewItem.SubItems.Add(document.IsActive ? "Yes" : "No");
 
                     listView1.Items.Add(listViewItem);
+
+                    addTypeToCheckBoxList(document.Type);
                 }
             }
 
@@ -268,6 +436,8 @@ namespace PKIProjekat
                     listViewItem.SubItems.Add(document.IsActive ? "Yes" : "No");
 
                     listView1.Items.Add(listViewItem);
+
+                    addTypeToCheckBoxList(document.Type);
                 }
             }
 
@@ -326,6 +496,8 @@ namespace PKIProjekat
             {
                 populateLists();
                 updateListView(ownDocuments, readableDocuments, writableDocuments);
+
+                MessageBox.Show("You have created a new document.");
             }
 
             newDocumentDialog.Dispose();
@@ -368,7 +540,14 @@ namespace PKIProjekat
 
         private void listView1_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
         {
-            documentToolStripMenuItem.Enabled = true;
+            if (e.IsSelected)
+            {
+                documentToolStripMenuItem.Enabled = true;
+            }
+            else
+            {
+                documentToolStripMenuItem.Enabled = false;
+            }
         }
 
     }

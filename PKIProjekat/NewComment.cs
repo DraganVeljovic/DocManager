@@ -45,6 +45,8 @@ namespace PKIProjekat
             newComment.Owner = loggedEmployee;
 
             commentRepository.Add(newComment);
+
+            Dispose();
         }
     }
 }

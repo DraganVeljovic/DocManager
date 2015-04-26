@@ -22,14 +22,24 @@ namespace PKIProjekat.NHibernate
             {
                 if (_sessionFactory == null)
                 {
-                    _sessionFactory = Fluently.Configure()
+                    /*_sessionFactory = Fluently.Configure()
                         .Database(MsSqlCeConfiguration.Standard.
                             ConnectionString("Data Source=C:\\Users\\Dragan\\Documents\\Visual Studio 2012\\Projects\\PKIProjekat\\PKIProjekat\\PKIDB.sdf"))
                         .Mappings(m =>
                             {
                                 m.FluentMappings.AddFromAssemblyOf<Employee>();
                                 m.FluentMappings.AddFromAssemblyOf<Document>();
-                             }).BuildSessionFactory();
+                             }).BuildSessionFactory();*/
+
+                    _sessionFactory = Fluently.Configure()
+                        .Database(
+                            MsSqlConfiguration.MsSql2012.ConnectionString("Data Source=DRAGAN-ASUS\\SQLEXPRESS;Initial Catalog=PKIDB; Integrated Security=true;"))
+                            .Mappings(m =>
+                            {
+                                m.FluentMappings.AddFromAssemblyOf<Employee>();
+                                m.FluentMappings.AddFromAssemblyOf<Document>();
+                            }).BuildSessionFactory();
+                    
                 }
                 return _sessionFactory;
             }

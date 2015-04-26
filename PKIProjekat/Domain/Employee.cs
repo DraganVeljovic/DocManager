@@ -14,7 +14,7 @@ namespace PKIProjekat.Domain
         public virtual string FirstName { get; set; }
         public virtual string LastName { get; set; }
         public virtual string Email { get; set; }
-        public virtual int Telephone { get; set; }
+        public virtual string Telephone { get; set; }
         //public virtual string Profession { get; set; }
         public virtual int OfficeNumber { get; set; }
         public virtual bool Administrator { get; set;  }
@@ -29,6 +29,28 @@ namespace PKIProjekat.Domain
             Documents = new List<Document>();
             Reading = new List<Document>();
             Writing = new List<Document>();
+        }
+
+        public Employee(Employee employee) : this()
+        {
+            this.Id = employee.Id;
+            this.Username = employee.Username;
+            this.Password = employee.Password;
+            this.FirstName = employee.FirstName;
+            this.LastName = employee.LastName;
+            this.Email = employee.Email;
+            this.Telephone = employee.Telephone;
+            this.OfficeNumber = employee.OfficeNumber;
+            this.Administrator = employee.Administrator;
+
+            foreach (var doc in employee.Documents)
+                this.Documents.Add(doc);
+
+            foreach (var doc in employee.Reading)
+                this.Reading.Add(doc);
+
+            foreach (var doc in employee.Writing)
+                this.Writing.Add(doc);
         }
 
         public override bool Equals(object obj)

@@ -23,14 +23,16 @@ namespace PKIProjekat.Mapping
             Map(x => x.IsReading);
             Map(x => x.IsWriting);
             Map(x => x.IsActive);
+            References(x => x.Content)
+                .Not.LazyLoad();
 
             HasManyToMany(x => x.Readers)
-                .Cascade.All()
+                //.Cascade.All()
                 .Table("DocumentReader")
                 .Not.LazyLoad();
 
             HasManyToMany(x => x.Writers)
-                .Cascade.All()
+                //.Cascade.All()
                 .Table("DocumentWriter")
                 .Not.LazyLoad();
 

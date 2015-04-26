@@ -116,6 +116,7 @@
     </Compile>
     <Compile Include="Domain\Comment.cs" />
     <Compile Include="Domain\Document.cs" />
+    <Compile Include="Domain\DocumentContent.cs" />
     <Compile Include="Domain\Employee.cs" />
     <Compile Include="FirstLoginDialog.cs">
       <SubType>Form</SubType>
@@ -136,6 +137,7 @@
       <DependentUpon>LoginForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Mapping\CommentMap.cs" />
+    <Compile Include="Mapping\DocumentContentMap.cs" />
     <Compile Include="Mapping\DocumentMap.cs" />
     <Compile Include="OpenDocumentDialog.cs">
       <SubType>Form</SubType>
@@ -144,6 +146,7 @@
       <DependentUpon>OpenDocumentDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Services\CommentRepository.cs" />
+    <Compile Include="Services\DocumentContentRepository.cs" />
     <Compile Include="Services\DocumentRepository.cs" />
     <Compile Include="Services\EmployeeRepository.cs" />
     <Compile Include="MainForm.cs">
@@ -306,9 +309,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Documents\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

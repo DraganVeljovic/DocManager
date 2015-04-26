@@ -32,3 +32,5 @@ C:\Users\Dragan\documents\visual studio 2012\Projects\PKIProjekat\PKIProjekat\ob
 C:\Users\Dragan\documents\visual studio 2012\Projects\PKIProjekat\PKIProjekat\obj\Debug\PKIProjekat.EmployeeOverviewDialog.resources
 C:\Users\Dragan\documents\visual studio 2012\Projects\PKIProjekat\PKIProjekat\obj\Debug\PKIProjekat.AddEmployeeForm.resources
 C:\Users\Dragan\documents\visual studio 2012\Projects\PKIProjekat\PKIProjekat\obj\Debug\PKIProjekat.FirstLoginDialog.resources
+C:\Users\Dragan\documents\visual studio 2012\Projects\PKIProjekat\PKIProjekat\obj\Debug\PKIProjekat.DisplayComment.resources
+C:\Users\Dragan\documents\visual studio 2012\Projects\PKIProjekat\PKIProjekat\obj\Debug\PKIProjekat.ShowComments.resources

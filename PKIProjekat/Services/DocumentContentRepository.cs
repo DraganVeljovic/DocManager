@@ -1,5 +1,4 @@
 ﻿using NHibernate;
-using NHibernate.Criterion;
 using PKIProjekat.Domain;
 using PKIProjekat.NHibernate;
 using System;
@@ -10,47 +9,36 @@ using System.Threading.Tasks;
 
 namespace PKIProjekat.Services
 {
-    public class CommentRepository
+    public class DocumentContentRepository
     {
-        public void Add(Comment comment)
+        public void Add(DocumentContent content)
         {
             using (ISession session = NHibernateHelper.OpenSession())
             {
                 using (ITransaction transaction = session.BeginTransaction())
                 {
-                    session.Save(comment);
+                    session.Save(content);
                     transaction.Commit();
                 }
             }
         }
 
-        public IList<Comment> GetCommentsForDocument(Document document)
+        public DocumentContent GetContentById(int id)
         {
             using (ISession session = NHibernateHelper.OpenSession())
             {
-                var result = session.QueryOver<Comment>().Where(x => x.Document == document).List<Comment>();
+                var result = session.QueryOver<DocumentContent>().Where(x => x.Id == id).SingleOrDefault();
                 return result;// ?? new User();
             }
         }
 
-        public Comment GetComment(DateTime created, Employee employee)
-        {
-            using (ISession session = NHibernateHelper.OpenSession())
-            {
-                var result = session.QueryOver<Comment>().Where(
-                    Restrictions.Eq("Created", created) && Restrictions.Eq("Owner", employee))
-                    .SingleOrDefault();
-                return result;
-            }
-        }
-
-        public void Delete(Comment comment)
+        public void Delete(DocumentContent content)
         {
             using (ISession session = NHibernateHelper.OpenSession())
             {
                 using (ITransaction transaction = session.BeginTransaction())
                 {
-                    session.Delete(comment);
+                    session.Delete(content);
                     transaction.Commit();
                 }
             }

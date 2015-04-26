@@ -44,13 +44,12 @@
             this.button2 = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
-            this.textBox7 = new System.Windows.Forms.TextBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.textBox7 = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // button1
             // 
-            this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.button1.Location = new System.Drawing.Point(271, 278);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
@@ -185,13 +184,6 @@
             this.label8.TabIndex = 37;
             this.label8.Text = "Password:";
             // 
-            // textBox7
-            // 
-            this.textBox7.Location = new System.Drawing.Point(134, 87);
-            this.textBox7.Name = "textBox7";
-            this.textBox7.Size = new System.Drawing.Size(129, 20);
-            this.textBox7.TabIndex = 36;
-            // 
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
@@ -202,6 +194,13 @@
             this.checkBox1.Text = "Remove";
             this.checkBox1.UseVisualStyleBackColor = true;
             this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            // 
+            // textBox7
+            // 
+            this.textBox7.Location = new System.Drawing.Point(134, 87);
+            this.textBox7.Name = "textBox7";
+            this.textBox7.Size = new System.Drawing.Size(129, 20);
+            this.textBox7.TabIndex = 36;
             // 
             // ChangeEmployeeDialog
             // 
@@ -251,7 +250,7 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.TextBox textBox7;
         private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.TextBox textBox7;
     }
 }

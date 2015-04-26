@@ -118,10 +118,19 @@ namespace PKIProjekat
             Employee selectedEmployee = employeeRepository.GetEmployeeByName(
                 listView1.SelectedItems[0].Text);
 
-            if ((new ChangeEmployeeDialog(ref selectedEmployee)).ShowDialog() == DialogResult.OK)
+            var dialogResult = (new ChangeEmployeeDialog(ref selectedEmployee)).ShowDialog();
+
+            switch (dialogResult)
             {
-                updateListView();
+                case DialogResult.OK:
+                    MessageBox.Show("User data has successfully been changed!");
+                    break;
+                case DialogResult.No:
+                    MessageBox.Show("User has successfully been removed!");
+                    break;
             }
+
+            updateListView();
         }
     }
 }

@@ -23,6 +23,14 @@ namespace PKIProjekat.Services
             }
         }
 
+        public IList<Document> GetAllDocumnents()
+        {
+            using (ISession session = NHibernateHelper.OpenSession())
+            {
+                return session.QueryOver<Document>().List<Document>();
+            }
+        }
+
         public Document GetDocumentByTitle(string title)
         {
             using (ISession session = NHibernateHelper.OpenSession())

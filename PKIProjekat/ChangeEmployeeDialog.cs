@@ -16,6 +16,8 @@ namespace PKIProjekat
         private Employee selectedEmployee;
         private PKIProjekat.Services.EmployeeRepository employeeRepository =
             new Services.EmployeeRepository();
+        private PKIProjekat.Services.DocumentRepository documentReposiory =
+            new Services.DocumentRepository();
 
         private bool remove = false;
 
@@ -44,6 +46,8 @@ namespace PKIProjekat
             if (remove)
             {
                 employeeRepository.Delete(selectedEmployee);
+
+                DialogResult = DialogResult.No;
             }
             else
             {
@@ -52,10 +56,12 @@ namespace PKIProjekat
                 selectedEmployee.Password = textBox7.Text;
                 selectedEmployee.LastName = textBox3.Text;
                 selectedEmployee.Email = textBox4.Text;
-                selectedEmployee.Telephone = int.Parse(textBox5.Text);
+                selectedEmployee.Telephone = textBox5.Text;
                 selectedEmployee.OfficeNumber = int.Parse(textBox6.Text);
 
                 employeeRepository.Update(selectedEmployee);
+
+                DialogResult = DialogResult.OK;
             }
 
             Dispose();

@@ -10,6 +10,7 @@ namespace PKIProjekat.Services
 {
     public class EmployeeRepository
     {
+  
         public void Add(Employee newEmployee)
         {
             using (ISession session = NHibernateHelper.OpenSession())

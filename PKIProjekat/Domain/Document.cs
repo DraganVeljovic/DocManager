@@ -18,6 +18,7 @@ namespace PKIProjekat.Domain
         public virtual int IsReading { get; set; }
         public virtual bool IsWriting { get; set; }
         public virtual bool IsActive { get; set; }
+        public virtual DocumentContent Content { get; set; }
 
         public virtual IList<Employee> Readers { get; set; }
         public virtual IList<Employee> Writers { get; set; }
@@ -32,6 +33,22 @@ namespace PKIProjekat.Domain
             IsReading = 0;
             IsWriting = false;
             IsActive = true;
+        }
+
+        public Document(Document document) : this()
+        {
+            this.Title = document.Title;
+            this.KeyWords = document.KeyWords;
+            this.Type = document.Type;
+            this.Created = document.Created;
+            this.Version = document.Version;
+            this.Content = document.Content;
+
+            foreach (var emp in document.Readers)
+                this.Readers.Add(emp);
+
+            foreach (var emp in document.Writers)
+                this.Writers.Add(emp);
         }
 
     }

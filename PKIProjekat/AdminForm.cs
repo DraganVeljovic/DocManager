@@ -27,9 +27,36 @@ namespace PKIProjekat
             userToolStripMenuItem.DropDownItems.Insert(1, usersOverview);
         }
 
+        protected override void populateLists()
+        {
+            IList<Document> allDocuments = documentRepository.GetAllDocumnents();
+
+            ownDocuments = new List<Document>();
+            writableDocuments = new List<Document>();
+            readableDocuments = null;
+
+            if (allDocuments != null)
+            {
+                foreach (Document doc in allDocuments)
+                {
+                    if (doc.Owner.Username.CompareTo(loggedEmployee.Username) == 0)
+                    {
+                        ownDocuments.Add(doc);
+                    }
+                    else
+                    {
+                        writableDocuments.Add(doc);
+                    }
+                }
+            }
+        }
+
         void addUser_Click(object sender, EventArgs e)
         {
-            (new AddEmployeeForm()).Show();
+            if (new AddEmployeeForm().ShowDialog() == DialogResult.OK)
+            {
+                MessageBox.Show("User has successfully been added!");
+            }
         }
 
         void usersOverview_Click(object sender, EventArgs e)

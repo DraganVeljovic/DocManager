@@ -23,20 +23,22 @@ namespace PKIProjekat.Mapping
             Map(x => x.Administrator);
 
             HasMany(x => x.Documents)
-                .Inverse()
+                //.Inverse()
                 .KeyColumn("owner_id")
                 .Not.LazyLoad()
                 .Cascade.All();
 
             HasManyToMany(x => x.Reading)
                 .Inverse()
-                .Cascade.All()
-                .Table("DocumentReader");
+                //.Cascade.All()
+                .Table("DocumentReader")
+                .Not.LazyLoad();
 
             HasManyToMany(x => x.Writing)
                 .Inverse()
-                .Cascade.All()
-                .Table("DocumentWriter");
+                //.Cascade.All()
+                .Table("DocumentWriter")
+                .Not.LazyLoad();
         }
         
     }

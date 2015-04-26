@@ -34,7 +34,6 @@
             this.label4 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
             this.comboBox3 = new System.Windows.Forms.ComboBox();
@@ -45,6 +44,9 @@
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.button4 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -62,9 +64,9 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(12, 84);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(34, 13);
+            this.label2.Size = new System.Drawing.Size(50, 13);
             this.label2.TabIndex = 0;
-            this.label2.Text = "Type:";
+            this.label2.Text = "File path:";
             // 
             // label3
             // 
@@ -97,17 +99,6 @@
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(301, 20);
             this.textBox2.TabIndex = 2;
-            // 
-            // comboBox1
-            // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
-            "pdf",
-            "doc"});
-            this.comboBox1.Location = new System.Drawing.Point(77, 84);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(57, 21);
-            this.comboBox1.TabIndex = 3;
             // 
             // comboBox2
             // 
@@ -180,7 +171,6 @@
             // 
             // button3
             // 
-            this.button3.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.button3.Location = new System.Drawing.Point(303, 317);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
@@ -204,15 +194,33 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Share";
             // 
+            // textBox3
+            // 
+            this.textBox3.Location = new System.Drawing.Point(77, 81);
+            this.textBox3.Name = "textBox3";
+            this.textBox3.Size = new System.Drawing.Size(231, 20);
+            this.textBox3.TabIndex = 13;
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(314, 79);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(64, 23);
+            this.button4.TabIndex = 9;
+            this.button4.Text = "Browse";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
             // NewDocumentDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(426, 352);
+            this.Controls.Add(this.button4);
+            this.Controls.Add(this.textBox3);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
-            this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.textBox2);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label3);
@@ -239,7 +247,6 @@
         protected System.Windows.Forms.Label label4;
         protected System.Windows.Forms.TextBox textBox1;
         protected System.Windows.Forms.TextBox textBox2;
-        protected System.Windows.Forms.ComboBox comboBox1;
         protected System.Windows.Forms.ComboBox comboBox2;
         protected System.Windows.Forms.Label label5;
         protected System.Windows.Forms.ComboBox comboBox3;
@@ -250,5 +257,8 @@
         protected System.Windows.Forms.ColumnHeader columnHeader1;
         protected System.Windows.Forms.ColumnHeader columnHeader2;
         protected System.Windows.Forms.GroupBox groupBox1;
+        protected System.Windows.Forms.TextBox textBox3;
+        protected System.Windows.Forms.Button button4;
+        protected System.Windows.Forms.OpenFileDialog openFileDialog1;
     }
 }
