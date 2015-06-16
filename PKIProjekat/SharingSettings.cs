@@ -53,21 +53,15 @@ namespace PKIProjekat
 
         private void button3_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(sharedDocument.Title + " " + employeeSharingWith.Username);
-
             if (stopSharing == true)
             {
                 if (sharingType.CompareTo("Read") == 0)
                 {
                     sharedDocument.Readers.Remove(employeeSharingWith);
-
-                    MessageBox.Show(sharedDocument.Title + " READ REMOVE " + employeeSharingWith.Username);
                 }
                 else if (sharingType.CompareTo("Write") == 0)
                 {
                     sharedDocument.Writers.Remove(employeeSharingWith);
-
-                    MessageBox.Show(sharedDocument.Title + " WRITE REMOVE" + employeeSharingWith.Username);
                 }
             }
             else if (changePermission == true)

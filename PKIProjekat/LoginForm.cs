@@ -37,7 +37,7 @@ namespace PKIProjekat
                 {
                     if (employee.Password.Equals(""))
                     {
-                        if ((new FirstLoginDialog(employee.Username)).ShowDialog() == DialogResult.OK)
+                        if ((new FirstLoginDialog(ref employee)).ShowDialog() == DialogResult.OK)
                         {
                             if (employee.Administrator == true)
                             {

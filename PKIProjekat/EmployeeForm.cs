@@ -9,6 +9,7 @@ using PKIProjekat.Services;
 using PKIProjekat.Domain;
 using System.Diagnostics;
 using System.IO;
+using System.Threading;
 
 namespace PKIProjekat
 {
@@ -16,6 +17,7 @@ namespace PKIProjekat
     {
         protected Employee loggedEmployee;
 
+        protected EmployeeRepository employeeRepository = new EmployeeRepository();
         protected DocumentRepository documentRepository = new DocumentRepository();
         protected CommentRepository commentRepository = new CommentRepository();
         protected DocumentContentRepository documentContentRepository = new DocumentContentRepository();
@@ -156,6 +158,23 @@ namespace PKIProjekat
                     if (MessageBox.Show("Are you sure you want to delete seleceted document",
                                     "Confirmation dialog", MessageBoxButtons.YesNo) == DialogResult.Yes)
                     {
+                        foreach (Comment comment in commentRepository.GetCommentsForDocument(selectedDocument))
+                        {
+                            commentRepository.Delete(comment);
+                        }
+
+                        foreach (Employee employee in selectedDocument.Readers)
+                        {
+                            employee.Reading.Remove(selectedDocument);
+                            employeeRepository.Update(employee);
+                        }
+                        
+                        foreach (Employee employee in selectedDocument.Writers)
+                        {
+                            employee.Reading.Remove(selectedDocument);
+                            employeeRepository.Update(employee);
+                        }
+
                         documentContentRepository.Delete(selectedDocument.Content);
                         documentRepository.Delete(selectedDocument);
 
@@ -189,9 +208,9 @@ namespace PKIProjekat
 
                 if (selectedDocument.IsActive)
                 {
-                    if (selectedDocument.IsWriting)
+                    if (selectedDocument.IsWriting || (selectedDocument.IsReading != 0))
                     {
-                        MessageBox.Show("Document is already open in write mode," +
+                        MessageBox.Show("Document is already open," +
                             "\nyou can not access document at the moment.\nPlease try again later.");
                     }
                     else
@@ -235,10 +254,22 @@ namespace PKIProjekat
 
                                 Document newVersion = new Document(selectedDocument);
 
+                                if (selectedDocument.Owner == null)
+                                {
+                                    newVersion.Writers.Remove(loggedEmployee);
+                                }
+                                else
+                                {
+                                    if (selectedDocument.Owner.Username.CompareTo(loggedEmployee.Username) != 0)
+                                    {
+                                        newVersion.Writers.Remove(loggedEmployee);
+                                    }
+                                }
+
                                 newVersion.Created = DateTime.Now;
                                 newVersion.Version = selectedDocument.Version + 1;
 
-                                newVersion.Owner = new Employee(selectedDocument.Owner);
+                                newVersion.Owner = new Employee(loggedEmployee);
 
                                 newVersion.Content = newVersionContent;
 
@@ -295,11 +326,21 @@ namespace PKIProjekat
             Document selectedDocument = documentRepository.GetDocumentByVersion(
                 listView1.SelectedItems[0].Text, int.Parse(listView1.SelectedItems[0].SubItems[1].Text));
 
-            if (selectedDocument.Owner.Username.CompareTo(loggedEmployee.Username) != 0 
+            bool owner = false;
+
+            if (selectedDocument.Owner != null)
+            {
+                if (selectedDocument.Owner.Username.CompareTo(loggedEmployee.Username) != 0)
+                {
+                    owner = true;
+                }
+            }
+
+            if (owner
                 && !loggedEmployee.Administrator 
                 && !selectedDocument.Writers.Contains(loggedEmployee))
             {
-                MessageBox.Show("Only document owner can change metadata.");
+                MessageBox.Show("You don't have a permission to change document metadata.");
             }
             else
             {
@@ -347,7 +388,7 @@ namespace PKIProjekat
 
                     readDocumentProcess.StartInfo.FileName = filepath;
                     readDocumentProcess.StartInfo.WindowStyle = ProcessWindowStyle.Maximized;
-
+                    
                     //var attributes = System.IO.File.GetAttributes(filepath);
                     //File.SetAttributes(filepath, attributes | FileAttributes.ReadOnly);
 
@@ -413,7 +454,14 @@ namespace PKIProjekat
                     listViewItem.SubItems.Add(document.Version.ToString());
                     listViewItem.SubItems.Add(document.Created.ToString());
                     listViewItem.SubItems.Add("Read");
-                    listViewItem.SubItems.Add(document.Owner.Username);
+                    if (document.Owner != null)
+                    {
+                        listViewItem.SubItems.Add(document.Owner.Username);
+                    }
+                    else 
+                    {
+                        listViewItem.SubItems.Add("");
+                    } 
                     listViewItem.SubItems.Add(document.Type);
                     listViewItem.SubItems.Add(document.IsActive ? "Yes" : "No");
 
@@ -431,7 +479,14 @@ namespace PKIProjekat
                     listViewItem.SubItems.Add(document.Version.ToString());
                     listViewItem.SubItems.Add(document.Created.ToString());
                     listViewItem.SubItems.Add("Write");
-                    listViewItem.SubItems.Add(document.Owner.Username);
+                    if (document.Owner != null)
+                    {
+                        listViewItem.SubItems.Add(document.Owner.Username);
+                    }
+                    else
+                    {
+                        listViewItem.SubItems.Add("");
+                    } 
                     listViewItem.SubItems.Add(document.Type);
                     listViewItem.SubItems.Add(document.IsActive ? "Yes" : "No");
 

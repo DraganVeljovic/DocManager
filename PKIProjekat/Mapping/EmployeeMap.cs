@@ -25,8 +25,8 @@ namespace PKIProjekat.Mapping
             HasMany(x => x.Documents)
                 //.Inverse()
                 .KeyColumn("owner_id")
-                .Not.LazyLoad()
-                .Cascade.All();
+                .Not.LazyLoad();
+                //.Cascade.All();
 
             HasManyToMany(x => x.Reading)
                 .Inverse()

@@ -16,13 +16,13 @@ namespace PKIProjekat
     {
         private EmployeeRepository employeeRepository = new EmployeeRepository();
 
-        private string username;
+        private Employee employee;
 
-        public FirstLoginDialog(string username)
+        public FirstLoginDialog(ref Employee employee)
         {
             InitializeComponent();
 
-            this.username = username;
+            this.employee = employee;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -31,8 +31,6 @@ namespace PKIProjekat
             {
                 if (textBox1.Text != "" && textBox2.Text != "")
                 {
-                    Employee employee = employeeRepository.GetEmployeeByName(username);
-
                     employee.Password = textBox1.Text;
 
                     employeeRepository.Update(employee);

@@ -45,8 +45,20 @@ namespace PKIProjekat
         {
             if (remove)
             {
-                employeeRepository.Delete(selectedEmployee);
+                foreach (Document document in selectedEmployee.Reading)
+                {
+                    document.Readers.Remove(selectedEmployee);
+                    documentReposiory.Update(document);
+                }
 
+                foreach (Document document in selectedEmployee.Writing)
+                {
+                    document.Writers.Remove(selectedEmployee);
+                    documentReposiory.Update(document);
+                }
+
+                employeeRepository.Delete(selectedEmployee);
+                
                 DialogResult = DialogResult.No;
             }
             else

@@ -46,6 +46,8 @@ namespace PKIProjekat
 
             commentRepository.Add(newComment);
 
+            DialogResult = DialogResult.OK;
+
             Dispose();
         }
     }

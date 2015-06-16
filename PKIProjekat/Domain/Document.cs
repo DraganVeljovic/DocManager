@@ -43,6 +43,7 @@ namespace PKIProjekat.Domain
             this.Created = document.Created;
             this.Version = document.Version;
             this.Content = document.Content;
+            this.Owner = document.Owner;
 
             foreach (var emp in document.Readers)
                 this.Readers.Add(emp);

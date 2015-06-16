@@ -39,9 +39,16 @@ namespace PKIProjekat
             {
                 foreach (Document doc in allDocuments)
                 {
-                    if (doc.Owner.Username.CompareTo(loggedEmployee.Username) == 0)
+                    if (doc.Owner != null)
                     {
-                        ownDocuments.Add(doc);
+                        if (doc.Owner.Username.CompareTo(loggedEmployee.Username) == 0)
+                        {
+                            ownDocuments.Add(doc);
+                        }
+                        else
+                        {
+                            writableDocuments.Add(doc);
+                        }
                     }
                     else
                     {
