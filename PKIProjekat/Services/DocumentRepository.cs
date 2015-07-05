@@ -23,7 +23,7 @@ namespace PKIProjekat.Services
             }
         }
 
-        public IList<Document> GetAllDocumnents()
+        public IList<Document> GetAllDocuments()
         {
             using (ISession session = NHibernateHelper.OpenSession())
             {
@@ -31,11 +31,11 @@ namespace PKIProjekat.Services
             }
         }
 
-        public Document GetDocumentByTitle(string title)
+        public IList<Document> GetDocumentsByTitle(string title)
         {
             using (ISession session = NHibernateHelper.OpenSession())
             {
-                var result = session.QueryOver<Document>().Where(x => x.Title == title).SingleOrDefault();
+                var result = session.QueryOver<Document>().Where(x => x.Title == title).List<Document>();
                 return result;// ?? new User();
             }
         }

@@ -54,15 +54,35 @@ namespace PKIProjekat
             viewCommentsToolStripMenuItem.Click += viewCommentsToolStripMenuItem_Click;
 
             changePasswordToolStripMenuItem.Click += changePasswordToolStripMenuItem_Click;
+            changeDataToolStripMenuItem.Click += changeDataToolStripMenuItem_Click;
             logoutToolStripMenuItem.Click += logoutToolStripMenuItem_Click;
 
             this.loggedEmployee = loggedEmployee;
- 
+            this.Text = this.Text + " | Logged user: " + loggedEmployee.Username;
+            
             // Set difference between dateTimePickers
             dateTimePicker2.MinDate = dateTimePicker1.Value.AddDays(1);
 
             populateLists();
             updateListView(ownDocuments, readableDocuments, writableDocuments);
+        }
+
+        /// <summary>
+        /// Change user data.
+        /// </summary>
+        void changeDataToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var dialogResult = (new ChangeEmployeeOwnDialog(ref loggedEmployee)).ShowDialog();
+
+            switch (dialogResult)
+            {
+                case DialogResult.OK:
+                    MessageBox.Show("User data has successfully been changed!");
+                    break;
+                case DialogResult.No:
+                    MessageBox.Show("User has successfully been removed!");
+                    break;
+            }
         }
 
         /// <summary>
@@ -221,8 +241,8 @@ namespace PKIProjekat
 
                             documentRepository.Update(selectedDocument);
 
-                            string filepath = MainForm.DocumentPath + "\\" +
-                            selectedDocument.Title + "." + selectedDocument.Type;
+                            string filepath = MainForm.DocumentPath + "\\" + selectedDocument.Title + 
+                                "_" + selectedDocument.Version + "_" + loggedEmployee.Username + "." + selectedDocument.Type;
 
                             if (File.Exists(filepath))
                             {
@@ -233,7 +253,15 @@ namespace PKIProjekat
 
                             Process writeDocumentProcess = new Process();
 
-                            writeDocumentProcess.StartInfo.FileName = filepath;
+                            if (selectedDocument.Type.Contains("doc") || selectedDocument.Type.Contains("docx"))
+                            {
+                                writeDocumentProcess.StartInfo.FileName = "WINWORD.EXE";
+                                writeDocumentProcess.StartInfo.Arguments = filepath;
+                            }
+                            else
+                            {
+                                writeDocumentProcess.StartInfo.FileName = filepath;
+                            }
                             writeDocumentProcess.StartInfo.WindowStyle = ProcessWindowStyle.Maximized;
 
                             writeDocumentProcess.Start();
@@ -267,8 +295,10 @@ namespace PKIProjekat
                                 }
 
                                 newVersion.Created = DateTime.Now;
-                                newVersion.Version = selectedDocument.Version + 1;
 
+                                IList<Document> existingVersions = documentRepository.GetDocumentsByTitle(selectedDocument.Title);
+                                newVersion.Version = (existingVersions == null) ? 0 : existingVersions.Count;
+                           
                                 newVersion.Owner = new Employee(loggedEmployee);
 
                                 newVersion.Content = newVersionContent;
@@ -374,8 +404,8 @@ namespace PKIProjekat
 
                     documentRepository.Update(selectedDocument);
 
-                    string filepath =  MainForm.DocumentPath + "\\" + 
-                        selectedDocument.Title + "." + selectedDocument.Type;
+                    string filepath = MainForm.DocumentPath + "\\" + selectedDocument.Title +
+                               "_" + selectedDocument.Version + "_" + loggedEmployee.Username + "." + selectedDocument.Type;
 
                     if (File.Exists(filepath))
                     {
@@ -386,9 +416,18 @@ namespace PKIProjekat
                     
                     Process readDocumentProcess = new Process();
 
-                    readDocumentProcess.StartInfo.FileName = filepath;
+                    if (selectedDocument.Type.Contains("doc") || selectedDocument.Type.Contains("docx"))
+                    {
+                        readDocumentProcess.StartInfo.FileName = "WINWORD.EXE";
+                        readDocumentProcess.StartInfo.Arguments = filepath;
+                    }
+                    else
+                    {
+                        readDocumentProcess.StartInfo.FileName = filepath;
+                    }
+
                     readDocumentProcess.StartInfo.WindowStyle = ProcessWindowStyle.Maximized;
-                    
+
                     //var attributes = System.IO.File.GetAttributes(filepath);
                     //File.SetAttributes(filepath, attributes | FileAttributes.ReadOnly);
 
@@ -402,6 +441,11 @@ namespace PKIProjekat
                     documentRepository.Update(selectedDocument);
                 }
             
+        }
+
+        void readDocumentProcess_Exited(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         protected virtual void populateLists()
@@ -603,6 +647,24 @@ namespace PKIProjekat
             {
                 documentToolStripMenuItem.Enabled = false;
             }
+        }
+
+        private void EmployeeForm_Load(object sender, EventArgs e)
+        {
+            ToolTip toolTip = new ToolTip();
+
+            toolTip.SetToolTip(checkBox1, "Enable search by title");
+            toolTip.SetToolTip(textBox1, "Please enter text for search");
+            toolTip.SetToolTip(checkBox2, "Enable search by key words");
+            toolTip.SetToolTip(textBox2, "Please enter text for search");
+            toolTip.SetToolTip(checkBox3, "Enable search by type");
+            toolTip.SetToolTip(checkedListBox1 , "Please choose types for search");
+            toolTip.SetToolTip(checkBox4, "Enable search by creation interval");
+            toolTip.SetToolTip(dateTimePicker1, "Please choose start date");
+            toolTip.SetToolTip(dateTimePicker2, "Please choose end date");
+            toolTip.SetToolTip(checkBox5, "Enable search for archived");
+            toolTip.SetToolTip(checkBox6, "Enable search for active");
+
         }
 
     }

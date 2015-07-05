@@ -31,14 +31,35 @@ namespace PKIProjekat
             if (MessageBox.Show("Are you sure you want to exit the application?", "Confirmation dialog", MessageBoxButtons.YesNo)
                 == DialogResult.Yes)
             {
-                Dispose();
+                this.Dispose();
+                Application.Exit();
             }
         }
 
-        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        private void helpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Help.ShowHelp(this, "C:\\Users\\Dragan\\Documents\\Visual Studio 2012\\Projects\\PKIProjekat\\HTMLHelp\\csh.chm");
+        }
+
+        private void aboutToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Projektni zadatak iz\nProgramiranja korisnickih interfejsa\n\t@ETF" +
-                "\n\nDragan Veljovic 3240/2014");
+               "\n\nDragan Veljovic 3240/2014", "About");
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (MessageBox.Show("Are you sure you want to exit the application?", "Confirmation dialog", MessageBoxButtons.YesNo)
+                == DialogResult.Yes)
+            {
+                this.Dispose();
+                Application.ExitThread();
+                //Application.Exit();
+            }
+            else
+            {
+                e.Cancel = true;
+            }
         }
 
     }

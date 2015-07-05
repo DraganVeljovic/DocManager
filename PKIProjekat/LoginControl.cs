@@ -29,5 +29,14 @@ namespace PKIProjekat
                 LoginEventHandler(this, EventArgs.Empty);
             }
         }
+
+        private void LoginControl_Load(object sender, EventArgs e)
+        {
+            
+            ToolTip toolTip = new ToolTip();
+
+            toolTip.SetToolTip(textBox1, "Please enter username");
+            toolTip.SetToolTip(textBox2, "Please enter password");
+        }
     }
 }

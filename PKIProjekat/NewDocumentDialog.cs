@@ -115,7 +115,7 @@ namespace PKIProjekat
                 newDocument.KeyWords = textBox2.Text;
                 newDocument.Type = filepath.Substring(filepath.LastIndexOf(".") + 1);
 
-                if (documentRepository.GetDocumentByTitle(newDocument.Title) == null)
+                if (documentRepository.GetDocumentsByTitle(newDocument.Title).Count == 0)
                 {
                     DocumentContent newDocumentContent = new DocumentContent();
 

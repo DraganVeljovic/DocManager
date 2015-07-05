@@ -274,6 +274,7 @@
             this.Controls.Add(this.checkBox2);
             this.Controls.Add(this.checkBox1);
             this.Name = "EmployeeForm";
+            this.Load += new System.EventHandler(this.EmployeeForm_Load);
             this.Controls.SetChildIndex(this.checkBox1, 0);
             this.Controls.SetChildIndex(this.checkBox2, 0);
             this.Controls.SetChildIndex(this.checkBox3, 0);

@@ -101,6 +101,7 @@
             this.Controls.Add(this.label1);
             this.Name = "LoginControl";
             this.Size = new System.Drawing.Size(306, 170);
+            this.Load += new System.EventHandler(this.LoginControl_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

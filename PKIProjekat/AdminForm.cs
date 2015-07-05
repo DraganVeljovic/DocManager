@@ -29,7 +29,7 @@ namespace PKIProjekat
 
         protected override void populateLists()
         {
-            IList<Document> allDocuments = documentRepository.GetAllDocumnents();
+            IList<Document> allDocuments = documentRepository.GetAllDocuments();
 
             ownDocuments = new List<Document>();
             writableDocuments = new List<Document>();
